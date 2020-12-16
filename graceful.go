@@ -94,12 +94,7 @@ func NewGraceful(fn ...func(*Graceful)) *Graceful {
 		sig := <-m.graceful
 		m.signal = sig
 		{
-			tmp := L{
-				Type:    "INFO",
-				Message: MSG_GRACEFUL_REC_TERMINAL_SIGNAL,
-				A:       fmt.Sprintf("Received a termination signal: %s / will be terminating in %d seconds", sig.String(), m.waitSec),
-			}
-			m.log.Println(tmp.Jsons())
+			m.log.Println(fmt.Sprintf("Received a termination signal: %s / will be terminating in %d seconds", sig.String(), m.waitSec))
 		}
 
 		for _, v := range m.finalFuncs {
