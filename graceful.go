@@ -56,7 +56,7 @@ func (m *Graceful) Stop() *Graceful {
 }
 func (m *Graceful) Recover(fn ...func(*Graceful)) *Graceful {
 	if r := recover(); r != nil {
-		m.log.Println(MSG_GRACEFUL_FAIL_RECOVER)
+		m.log.Println("MSG_GRACEFUL_FAIL_RECOVER")
 		for _, v := range fn {
 			v(m)
 		}
