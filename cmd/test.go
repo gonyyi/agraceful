@@ -9,17 +9,14 @@ import (
 )
 
 func main() {
-	graceful.New(func() int {
+	graceful.New(func() {
 		switch graceful.SignalReceived {
 		case syscall.SIGKILL:
 			println("Received SIGKILL")
-			return 0
 		case syscall.SIGINT:
 			println("Received SIGINT")
-			return 0
 		default:
 			println("Received Others")
-			return 1
 		}
 		return 0
 	})
