@@ -13,15 +13,15 @@ var SignalReceived os.Signal
 
 type Graceful struct {
 	graceful chan os.Signal
-	DoFinal  func() int
+	DoFinal  func()
 }
 
-func (m *Graceful) SetDoFinal(fn func() int) *Graceful {
+func (m *Graceful) SetDoFinal(fn func()) *Graceful {
 	m.DoFinal = fn
 	return m
 }
 
-func New(fn func() int) *Graceful {
+func New(fn func()) *Graceful {
 	m := Graceful{
 		graceful: make(chan os.Signal),
 		DoFinal:  fn,
@@ -35,7 +35,8 @@ func New(fn func() int) *Graceful {
 
 		// If DoFinal function is not defined, use exit with code 1.
 		if m.DoFinal != nil {
-			os.Exit(m.DoFinal())
+			m.DoFinal()
+			os.Exit(0)
 			return
 		}
 		os.Exit(1)
