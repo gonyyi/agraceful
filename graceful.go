@@ -16,15 +16,25 @@ type Graceful struct {
 	DoFinal  func()
 }
 
-func (m *Graceful) SetDoFinal(fn func()) *Graceful {
-	m.DoFinal = fn
-	return m
+// GetStackTrace will returns stack trace []byte
+func GetStackTrace() []byte {
+	return debug.Stack()
 }
 
-func New(fn func()) *Graceful {
+// Recover should be used inside go routine or any function with defer method.
+func Recover(f func()) {
+	if r := recover(); r != nil {
+		if f != nil {
+			f()
+		}
+	}
+}
+
+// New takes a function to execute when terminated
+func New(f func()) *Graceful {
 	m := Graceful{
 		graceful: make(chan os.Signal),
-		DoFinal:  fn,
+		DoFinal:  f,
 	}
 
 	// If found os.Interrupt, os.Kill, etc.. send a signal to m.graceful.
