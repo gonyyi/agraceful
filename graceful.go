@@ -36,10 +36,7 @@ func New(fn func()) *Graceful {
 		// If DoFinal function is not defined, use exit with code 1.
 		if m.DoFinal != nil {
 			m.DoFinal()
-			os.Exit(0)
-			return
 		}
-		os.Exit(1)
 		return
 	}()
 
